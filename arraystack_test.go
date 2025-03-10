@@ -5,7 +5,7 @@ import (
 )
 
 func TestArrayStack(t *testing.T) {
-	s := newArrayStack()
+	s := newArrayStack[int]()
 	s.push(1)
 	s.push(2)
 	s.push(3)

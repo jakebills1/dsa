@@ -9,42 +9,42 @@ type stackable interface {
 	empty() bool
 }
 
-type arrayStack struct {
-	storage []any
+type arrayStack[T any] struct {
+	storage []T
 }
 
-func newArrayStack() *arrayStack {
-	var s []any
-	return &arrayStack{storage: s}
+func newArrayStack[T any]() *arrayStack[T] {
+	return &arrayStack[T]{storage: []T{}}
 }
 
-func (s *arrayStack) push(el any) {
+func (s *arrayStack[T]) push(el T) {
 	s.storage = append(s.storage, el)
 }
 
-func (s *arrayStack) pop() (any, error) {
+func (s *arrayStack[T]) pop() (T, error) {
 	if s.lastIdx() < 0 {
-		return nil, errors.New("stack is empty")
+		var zero T
+		return zero, errors.New("stack is empty")
 	}
 	el := s.storage[s.lastIdx()]
 	s.storage = s.storage[:s.lastIdx()]
 	return el, nil
 }
 
-func (s *arrayStack) read() (any, error) {
+func (s *arrayStack[T]) read() (any, error) {
 	if len(s.storage) == 0 {
 		return nil, errors.New("stack is empty")
 	}
 	return s.storage[s.lastIdx()], nil
 }
 
-func (s *arrayStack) empty() bool {
+func (s *arrayStack[T]) empty() bool {
 	if len(s.storage) == 0 {
 		return true
 	}
 	return false
 }
 
-func (s *arrayStack) lastIdx() int {
+func (s *arrayStack[T]) lastIdx() int {
 	return len(s.storage) - 1
 }
